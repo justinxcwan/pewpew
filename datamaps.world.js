@@ -458,7 +458,7 @@
           if (Math.abs(originXY[0] - destXY[0]) > Math.abs(originXY[1] - destXY[1])) {
             return (originXY[0] > destXY[0])? "url(#gradientLR)" : "url(#gradientRL)";
           } else {
-            return (originXY[1] < destXY[1])? "url(#gradientTB)" : "url(#gradientBT)";
+            return (originXY[1] > destXY[1])? "url(#gradientTB)" : "url(#gradientBT)";
           }
         })
         .style('stroke-width', function(datum) {
