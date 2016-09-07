@@ -317,6 +317,13 @@ function about() {
 
       })
 
+    map.addPlugin('dept', function() {
+      map.svg.insert("path", ".datamaps-subunits")
+        .datum(topojson.feature(map.chnTopo, map.chnTopo.objects.chn))
+        .attr("class", "land")
+        .attr("d", map.path)
+    });
+
     // we read in a modified file of all country centers
     var centers = [] ;
     d3.tsv("country_centroids_primary.csv", function(data) { centers = data; });
@@ -326,8 +333,8 @@ function about() {
     // setup structures for the "hits" (arcs)
     // and circle booms
 
-    var hits = FixedQueue( 100, [  ] );
-    var boom = FixedQueue( 100, [  ] );
+    var hits = FixedQueue( 10, [  ] );
+    var boom = FixedQueue( 10, [  ] );
 
     // we need random numbers and also a way to build random ip addresses
     function getRandomInt(min, max) {return Math.floor(Math.random() * (max - min + 1)) + min;}
