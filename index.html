@@ -144,7 +144,7 @@ function about() {
   <script>
 
     // setup default min/max timer range for random draw
-    attack_min = 100;
+    attack_min = 1000;
     attack_max = 1000;
 
     // add/change the attack types here
@@ -294,7 +294,7 @@ function about() {
 
         scope: 'world',
         element: document.getElementById('container1'),
-        projection: 'equirectangular',
+        projection: 'mercator',
         // change the projection to something else only if you have absolutely no cartographic sense
 
         fills: { defaultFill: '#0A233C', },
@@ -326,8 +326,8 @@ function about() {
     // setup structures for the "hits" (arcs)
     // and circle booms
 
-    var hits = FixedQueue( 10, [  ] );
-    var boom = FixedQueue( 10, [  ] );
+    var hits = FixedQueue( 100, [  ] );
+    var boom = FixedQueue( 100, [  ] );
 
     // we need random numbers and also a way to build random ip addresses
     function getRandomInt(min, max) {return Math.floor(Math.random() * (max - min + 1)) + min;}

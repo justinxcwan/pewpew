@@ -221,7 +221,8 @@
     else if ( options.scope === 'world' ) {
       projection = d3.geo[options.projection]()
         .scale((width + 1) / 2 / Math.PI)
-        .translate([width / 2, height / (options.projection === "mercator" ? 1.45 : 1.8)]);
+        .translate([width / 2, height / (options.projection === "mercator" ? 1.45 : 1.8)])
+                .rotate([-115, 0]);
     }
 
     if ( options.projection === 'orthographic' ) {
@@ -438,6 +439,8 @@
     var path = d3.geo.path()
         .projection(self.projection);
 
+    var longitudeCenter = self.projection.rotate()[0];
+
     arcs
       .enter()
         .append('svg:path')
@@ -448,11 +451,14 @@
         //   return val(datum.strokeColor, options.strokeColor, datum);
         // })
         .style('fill', 'none')
-        .style('stroke', function(d) {
-          if (Math.abs(d.origin.longitude - d.destination.longitude) > Math.abs(d.origin.latitude - d.destination.latitude)) {
-            return (d.origin.longitude > d.destination.longitude)? "url(#gradientLR)" : "url(#gradientRL)";
+        .style('stroke', function(datum) {
+            var originXY = self.latLngToXY(val(datum.origin.latitude, datum), val(datum.origin.longitude, datum));
+            var destXY = self.latLngToXY(val(datum.destination.latitude, datum), val(datum.destination.longitude, datum));
+
+          if (Math.abs(originXY[0] - destXY[0]) > Math.abs(originXY[1] - destXY[1])) {
+            return (originXY[0] > destXY[0])? "url(#gradientLR)" : "url(#gradientRL)";
           } else {
-            return (d.origin.latitude < d.destination.latitude)? "url(#gradientTB)" : "url(#gradientBT)";
+            return (originXY[1] < destXY[1])? "url(#gradientTB)" : "url(#gradientBT)";
           }
         })
         .style('stroke-width', function(datum) {
